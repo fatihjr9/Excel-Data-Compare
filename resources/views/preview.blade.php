@@ -10,36 +10,35 @@
 
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 dark:text-white gap-2">
+            <div class="grid grid-cols-1 dark:text-white gap-2 z-0 relative">
                 <section class="flex flex-col space-y-4 bg-slate-800 text-white p-4 rounded-md">
-                    <h5 class="text-xl font-bold text-white">File 1</h5>
-                    @if(isset($data1) && $data1->count())
-                        @foreach ($data1 as $index => $collection)
-                            <div class="grid grid-cols-3 border-b border-slate-700 overflow-x-auto">
-                                @foreach ($collection as $item)
-                                    <span class="mb-2">{{ $item }}</span>
+                    <h5 class="text-xl font-bold text-white">Merged Data</h5>
+                    @if(isset($mergedData) && count($mergedData) > 0)
+                        @foreach ($mergedData as $key => $mergedRow)
+                            <div class="grid grid-cols-6 border-b border-slate-700 p-2 rounded-md gap-y-2">
+                                {{-- Display merged row data --}}
+                                @foreach ($mergedRow['data1'] as $index => $value)
+                                    <p class="col-span-2 @if($mergedRow['merged']) bg-slate-700 p-2 @endif">{{ $value }}</p>
+                                @endforeach
+
+                                @foreach ($mergedRow['data2'] as $index => $value)
+                                    <p class="col-span-2 @if($mergedRow['merged']) bg-slate-700 p-2 @endif">{{ $value }}</p>
                                 @endforeach
                             </div>
                         @endforeach
                     @else
-                        <p>No data found for File 1.</p>
-                    @endif
-                </section>
-                <section class="flex flex-col space-y-4 bg-slate-800 text-white p-4 rounded-md">
-                    <h5 class="text-xl font-bold text-white">File 2</h5>
-                    @if(isset($data2) && $data2->count())
-                        @foreach ($data2 as $index => $collection)
-                            <div class="grid grid-cols-3 border-b border-slate-700">
-                                @foreach ($collection as $item)
-                                    <span class="mb-2">{{ $item }} </span>
-                                @endforeach
-                            </div>
-                        @endforeach
-                    @else
-                        <p>No data found for File 2.</p>
+                        <p>No merged data found.</p>
                     @endif
                 </section>
             </div>
+            @if(isset($fileName))
+                <form method="POST" action="{{ route('dashboard.download', $fileName) }}">
+                    @csrf
+                    <button type="submit" class="w-full py-2 rounded-md bg-slate-800 text-white mt-6 z-20 relative">
+                        Download Merged Data
+                    </button>
+                </form>
+            @endif
         </div>
     </div>
 </x-app-layout>
