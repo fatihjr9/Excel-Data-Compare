@@ -31,14 +31,10 @@
                     @endif
                 </section>
             </div>
-            @if(isset($fileName))
-                <form method="POST" action="{{ route('dashboard.download', $fileName) }}">
-                    @csrf
-                    <button type="submit" class="w-full py-2 rounded-md bg-slate-800 text-white mt-6 z-20 relative">
-                        Download Merged Data
-                    </button>
-                </form>
-            @endif
+            <a href="{{ route('dashboard.download', ['files' => $fileName]) }}" type="submit" class="w-full py-2 rounded-md bg-slate-800 text-white mt-6 z-20 relative text-center">
+                Download Merged Data
+            </a>
+
         </div>
     </div>
 </x-app-layout>

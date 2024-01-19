@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DataCompare;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -104,7 +105,7 @@ class DataCompareController extends Controller
 
             // Save the merged data to the public/files directory
             $fileName = 'merged_data_' . now()->format('YmdHis') . '.xlsx';
-            $filePath = public_path('files/' . $fileName);
+            $filePath = storage_path('public/files/' . $fileName);
             Excel::store(new MergedDataExport($mergedData), 'public/files/' . $fileName);
 
             return view('preview', compact('mergedData', 'fileName'));
@@ -112,7 +113,16 @@ class DataCompareController extends Controller
 
         return view('preview', compact('data1', 'data2'));
     }
+    public function download($files)
+    {
+        $filePath = storage_path('app/public/files/' . $files);
+    
+        if (file_exists($filePath)) {
+            return response()->download($filePath, $files);
+        } else {
+            return view('404');
+        }
+    }
+
     
 }
-
-

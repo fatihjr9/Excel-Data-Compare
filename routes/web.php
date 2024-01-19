@@ -25,5 +25,5 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [DataCompareController::class, 'index'])->name('dashboard');
     Route::post('/dashboard/preview', [DataCompareController::class, 'preview'])->name('dashboard.preview');
-    Route::post('/dashboard/download/{fileName}', [DataCompareController::class, 'downloadMergedData'])->name('dashboard.download');
+    Route::get('/dashboard/download/{files}', [DataCompareController::class, 'download'])->name('dashboard.download');
 });
